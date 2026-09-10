@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | CareSignal{% endblock %}
+{% block content %}
+<section class="hero-row">
+  <div>
+    <p class="eyebrow">CAREGIVER CONSOLE / TODAY</p>
+    <h1>Notice change<br><em>before it compounds.</em></h1>
+    <p class="lede">CareSignal turns daily observations into clear, explainable signals for the people who care for someone at home.</p>
+  </div>
+  <div class="hero-note"><span class="pulse"></span><strong>Rules-first monitoring</strong><small>Every alert can be traced to a reading or trend.</small></div>
+</section>
+<section class="section-heading"><div><p class="eyebrow">YOUR PEOPLE</p><h2>Patient overview</h2></div><a class="button primary" href="{{ url_for('new_patient') }}">Add patient <span>+</span></a></section>
+{% if patient_cards %}
+<div class="patient-grid">
+{% for card in patient_cards %}
+  <a class="patient-card" href="{{ url_for('patient_detail', patient_id=card.patient.id) }}">
+    <div class="patient-card-top"><span class="avatar">{{ card.patient.name[0]|upper }}</span><span class="arrow">↗</span></div>
+    <h3>{{ card.patient.name }}</h3>
+    {% if card.latest %}
+      <div class="risk-row"><span class="risk-dot {{ card.latest.risk|lower }}"></span><span>{{ card.latest.risk }}</span></div>
+      <p class="muted">Last check-in · {{ card.latest.observation.date }}</p>
+    {% else %}<p class="muted">No check-in recorded yet.</p>{% endif %}
+  </a>
+{% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><div class="empty-icon">+</div><h2>Start with one patient</h2><p>Add a patient, then record their first daily check-in.</p><a class="button primary" href="{{ url_for('new_patient') }}">Create patient</a></div>
+{% endif %}
+<div class="principle"><span class="principle-number">01</span><div><p class="eyebrow">THE CARESIGNAL PRINCIPLE</p><h3>Rules decide the risk. Plain language explains it.</h3></div><p>Optional AI can help phrase an explanation, but it can never override the deterministic safety rules.</p></div>
+{% endblock %}
