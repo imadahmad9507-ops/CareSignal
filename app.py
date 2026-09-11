@@ -1,4 +1,5 @@
 from datetime import date
+import sqlite3
 
 from flask import Flask, flash, redirect, render_template, request, url_for
 
@@ -113,6 +114,8 @@ def check_in(patient_id):
             add_observation(patient_id, parse_observation(request.form))
             flash("Daily check-in saved.", "success")
             return redirect(url_for("patient_detail", patient_id=patient_id))
+        except sqlite3.IntegrityError:
+            flash("A check-in already exists for this patient on that date. Choose another date.", "error")
         except (KeyError, ValueError) as error:
             flash(str(error), "error")
     return render_template("check_in.html", patient=patient, today=date.today().isoformat())

@@ -1,6 +1,6 @@
 # CareSignal
 
-CareSignal is an explainable, rules-based health trend monitoring prototype for family caregivers. It is a hackathon project using synthetic data, not a medical device or diagnostic system.
+CareSignal is a Flask-based, explainable, rules-based health trend monitoring prototype for family caregivers. It is prepared exclusively for the UnivaBio hackathon using synthetic data, not a medical device or diagnostic system.
 
 ## What it does
 
@@ -30,16 +30,6 @@ python app.py
 ```
 
 Open <http://127.0.0.1:5000> in a browser.
-
-## Run the Streamlit version
-
-Install the requirements, seed the demo patient, and start Streamlit:
-
-```powershell
-python -m streamlit run streamlit_app.py
-```
-
-Streamlit will open the app at <http://localhost:8501>. This is the recommended entry point for Streamlit Community Cloud deployment. In Community Cloud, select `streamlit_app.py` as the main file and add `AI_API_KEY` only if optional AI wording is desired. The app works without secrets.
 
 The app works without an AI key. To enable optional explanation wording through an OpenAI-compatible endpoint, set environment variables before starting Flask:
 
@@ -94,6 +84,9 @@ CareSignal/
 ├── explanations.py
 ├── risk_rules.py
 ├── seed.py
+├── test_scenarios.py
+├── PROJECT_DESCRIPTION.md
+├── DEMO_VIDEO_SCRIPT.md
 ├── requirements.txt
 ├── README.md
 ├── instance/              # created automatically; SQLite database lives here
