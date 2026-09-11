@@ -170,3 +170,18 @@ CareSignal/
     ├── css/style.css
     └── js/chart.js
 ```
+
+## Credits and external resources
+
+- **Framework & Runtime:** [Flask](https://flask.palletsprojects.com/) (Python web framework)
+- **Data Visualization:** [Chart.js](https://www.chartjs.org/) (Client-side interactive charting)
+- **Iconography:** [Lucide Icons](https://lucide.dev/) (SVG vital-sign icons)
+- **Typography:** [Google Fonts](https://fonts.google.com/) (Space Grotesk and DM Sans)
+- **Automated Verification:** [Playwright](https://playwright.dev/) (Automated headless browser screenshot capture)
+
+## AI usage disclosure
+
+In accordance with FirstCommit rules, AI tools (large language models) were used during development as learning and brainstorm aids to explore edge-case scenarios, generate code drafts, debug syntax, and refine documentation. 
+
+All clinical risk logic in CareSignal is completely deterministic, inspectable, and human-written in Python rules (`risk_rules.py`). The optional runtime AI integration (`explanations.py`) is strictly constrained to phrasing explanations in plain English and has zero authority to determine or alter clinical risk levels.
+
