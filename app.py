@@ -150,7 +150,7 @@ def dashboard():
                 else None,
             }
         )
-    return render_template("dashboard.html", patient_cards=patient_cards)
+    return render_template("dashboard.html", patient_cards=patient_cards, body_class="dashboard-page")
 
 
 @app.route("/patients/new", methods=["GET", "POST"])
