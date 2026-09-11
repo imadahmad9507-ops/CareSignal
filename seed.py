@@ -1,9 +1,20 @@
+from datetime import date, timedelta
+
 from database import add_observation, add_patient, get_connection, get_patients, init_db
+
+
+today = date.today()
+ahmed_day1 = today - timedelta(days=4)
+ahmed_day2 = today - timedelta(days=3)
+ahmed_day3 = today - timedelta(days=2)
+fatima_day1 = today - timedelta(days=2)
+fatima_day2 = today - timedelta(days=1)
+fatima_day3 = today
 
 
 DEMO_OBSERVATIONS = [
     {
-        "date": "2026-09-07",
+        "date": ahmed_day1.isoformat(),
         "oxygen": 96,
         "temperature": 37.2,
         "blood_pressure_sys": 120,
@@ -15,7 +26,7 @@ DEMO_OBSERVATIONS = [
         "notes": "Feeling normal.",
     },
     {
-        "date": "2026-09-08",
+        "date": ahmed_day2.isoformat(),
         "oxygen": 93,
         "temperature": 38.1,
         "blood_pressure_sys": 124,
@@ -27,7 +38,7 @@ DEMO_OBSERVATIONS = [
         "notes": "More tired than usual.",
     },
     {
-        "date": "2026-09-09",
+        "date": ahmed_day3.isoformat(),
         "oxygen": 89,
         "temperature": 38.8,
         "blood_pressure_sys": 128,
@@ -42,7 +53,7 @@ DEMO_OBSERVATIONS = [
 
 FATIMA_OBSERVATIONS = [
     {
-        "date": "2026-09-09",
+        "date": fatima_day1.isoformat(),
         "oxygen": 98,
         "temperature": 36.7,
         "blood_pressure_sys": 118,
@@ -54,7 +65,7 @@ FATIMA_OBSERVATIONS = [
         "notes": "Feeling well and following the normal routine.",
     },
     {
-        "date": "2026-09-10",
+        "date": fatima_day2.isoformat(),
         "oxygen": 97,
         "temperature": 36.8,
         "blood_pressure_sys": 119,
@@ -66,7 +77,7 @@ FATIMA_OBSERVATIONS = [
         "notes": "No new concerns reported.",
     },
     {
-        "date": "2026-09-11",
+        "date": fatima_day3.isoformat(),
         "oxygen": 98,
         "temperature": 36.6,
         "blood_pressure_sys": 117,
