@@ -21,6 +21,13 @@ Last verified: September 11, 2026
 | Optional AI success | Working | Mocked success path returns optional AI source |
 | AI unavailable/failure fallback | Working | No-key and simulated failure return template text |
 | Friendly errors | Working | Custom 404/500 templates and duplicate-date message |
+| Dashboard animated visual layer | Working | CSS-only motion is isolated to `.dashboard-page`; no WebGL dependency |
+| Page transition animation | Working | Navigation adds a short fade/slide before internal route changes |
+| Risk arrival animation | Working | Status heading animates on detail-page load without changing risk logic |
+| Favicon and metadata | Working | SVG favicon and description meta tag render on every page |
+| Vital-sign icons | Working | Lucide icons are added to detail-page trend cards with text labels retained |
+| Safety architecture diagram | Working | About page shows Input -> Validation -> Rules -> Risk -> Explanation |
+| Loading feedback | Working | Check-in submit button changes to `Saving check-in...` and disables itself |
 
 ## Known limitations
 
@@ -28,3 +35,4 @@ Last verified: September 11, 2026
 - Trend arrows describe numeric direction, not whether that direction is medically good or bad.
 - Chart.js is loaded from a CDN, so a fully offline browser will not show the chart library.
 - The report uses browser print-to-PDF rather than a server-side PDF engine.
+- The dashboard visual flourish uses CSS rather than Three.js/WebGL to minimize runtime and review risk.

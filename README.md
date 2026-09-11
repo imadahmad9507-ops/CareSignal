@@ -28,6 +28,10 @@ The main workflow is simple: create a patient, record an observation, review the
 - Friendly validation for missing, malformed, duplicate-date, and out-of-range input.
 - Empty-state onboarding and an in-app safety architecture page.
 - Optional AI wording with a guaranteed local fallback; AI never decides risk.
+- Calm dashboard-only animated gradient visual layer with no WebGL dependency.
+- Page transitions, subtle risk-arrival animation, favicon, metadata, Lucide vital icons, and an architecture diagram.
+
+The visual layer is presentational only. It does not participate in validation, risk calculation, chart data, or AI explanation. The dashboard uses a lightweight CSS animated gradient instead of Three.js so unsupported WebGL, large bundles, or CDN failures cannot affect the core app. Detail, check-in, and report pages remain visually restrained for readability.
 
 ## Setup on Windows PowerShell
 

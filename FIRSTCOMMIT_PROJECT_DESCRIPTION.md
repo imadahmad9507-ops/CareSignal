@@ -12,6 +12,8 @@ Health deterioration often does not arrive as one dramatic event. A caregiver ma
 
 CareSignal supports multiple patient profiles, daily observations, caregiver notes, trend charts, raw-direction vital indicators, and a printable patient report. The dashboard shows each patient's current signal and how long it has been since their last check-in. The patient view makes the reasoning visible instead of hiding it behind a score.
 
+The interface also includes a calm dashboard-only animated gradient, subtle page transitions, vital-sign icons, a favicon, and a visual safety-architecture diagram. These are presentation features only: they never affect the data, rules, risk level, or explanation logic.
+
 ### Safety-first architecture
 
 The risk level is decided by deterministic Python rules. Oxygen, temperature, breathing difficulty, confusion, and change over time can raise the signal from Stable to Monitor, Concerning, or Urgent. The highest triggered rule wins. Optional AI can turn the already-computed reasons into calm plain language, but it cannot create, change, or override a risk decision. If no API key is available or an AI call fails, CareSignal uses a local template and keeps working.
