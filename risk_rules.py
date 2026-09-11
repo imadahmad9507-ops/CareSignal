@@ -5,14 +5,6 @@ RISK_ORDER = {
     "Urgent": 3,
 }
 
-BREATHING_ORDER = {
-    "none": 0,
-    "mild": 1,
-    "moderate": 2,
-    "severe": 3,
-}
-
-
 def _raise_risk(current_risk, candidate_risk):
     if RISK_ORDER[candidate_risk] > RISK_ORDER[current_risk]:
         return candidate_risk
@@ -55,13 +47,17 @@ def assess_risk(observation, previous_observation=None):
             + "); no conclusion was made about those readings."
         )
 
+    # Below 90% is a common emergency warning boundary for pulse oximetry.
     if oxygen is not None and oxygen < 90:
         risk_level = _raise_risk(risk_level, "Urgent")
         reasons.append("Oxygen saturation is below the safety threshold.")
+    # 90-93% represents a lower-than-normal reading worth prompt attention.
     elif oxygen is not None and 90 <= oxygen <= 93:
         risk_level = _raise_risk(risk_level, "Concerning")
         reasons.append("Oxygen saturation is lower than normal.")
 
+    # 39.5 C marks a high fever in this educational prototype; 38.5 C is
+    # retained as a lower concerning boundary so the escalation is gradual.
     if temperature is not None and temperature >= 39.5:
         risk_level = _raise_risk(risk_level, "Urgent")
         reasons.append("High fever detected.")
@@ -69,6 +65,8 @@ def assess_risk(observation, previous_observation=None):
         risk_level = _raise_risk(risk_level, "Concerning")
         reasons.append("The patient has a fever.")
 
+    # Moderate difficulty warrants concern; severe difficulty is an urgent
+    # red flag independent of other readings.
     if breathing == "moderate":
         risk_level = _raise_risk(risk_level, "Concerning")
         reasons.append("Moderate breathing difficulty was reported.")
@@ -78,6 +76,8 @@ def assess_risk(observation, previous_observation=None):
             "Severe breathing difficulty reported — this requires immediate attention."
         )
 
+    # Combining confusion with oxygen below 94% catches a high-risk pattern
+    # that either field alone may not fully describe.
     if confusion == "yes" and oxygen is not None and oxygen < 94:
         risk_level = _raise_risk(risk_level, "Urgent")
         reasons.append(

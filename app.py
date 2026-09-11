@@ -27,13 +27,13 @@ DISCLAIMER = (
     "emergency, contact a doctor or emergency services immediately."
 )
 
-TREND_FIELDS = {
-    "oxygen": "Oxygen",
-    "temperature": "Temperature",
-    "blood_pressure_sys": "Systolic pressure",
-    "blood_pressure_dia": "Diastolic pressure",
-    "pain_level": "Pain",
-}
+TREND_FIELDS = (
+    "oxygen",
+    "temperature",
+    "blood_pressure_sys",
+    "blood_pressure_dia",
+    "pain_level",
+)
 
 
 def trend_direction(current, previous, field):

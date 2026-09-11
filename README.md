@@ -1,6 +1,6 @@
 # CareSignal
 
-CareSignal is a Flask-based, explainable, rules-based health trend monitoring prototype for family caregivers. It is prepared exclusively for the UnivaBio hackathon using synthetic data, not a medical device or diagnostic system.
+CareSignal is a Flask-based, explainable, rules-based health trend monitoring prototype for family caregivers. This release is prepared for the FirstCommit general web app category using synthetic data, not a medical device or diagnostic system.
 
 ## What it does
 
@@ -17,6 +17,17 @@ CareSignal is a Flask-based, explainable, rules-based health trend monitoring pr
 CareSignal helps family caregivers notice gradual changes in a patient's health across multiple daily check-ins. It is designed for a hackathon demonstration using synthetic data, not for diagnosis, treatment decisions, or emergency response.
 
 The main workflow is simple: create a patient, record an observation, review the current signal, and inspect the trend chart. Each signal includes the readings and rules that caused it, so the result is explainable rather than a mysterious model output.
+
+## FirstCommit feature set
+
+- Multi-patient dashboard with current signal and human-readable last check-in age.
+- Daily check-ins with oxygen, temperature, blood pressure, breathing, pain, confusion, medication adherence, and caregiver journal notes.
+- Deterministic risk rules with visible reasons and raw-direction trend indicators.
+- Chart.js timeline for oxygen, temperature, and pain.
+- Printable patient summary that can be saved as a PDF from the browser.
+- Friendly validation for missing, malformed, duplicate-date, and out-of-range input.
+- Empty-state onboarding and an in-app safety architecture page.
+- Optional AI wording with a guaranteed local fallback; AI never decides risk.
 
 ## Setup on Windows PowerShell
 
@@ -41,6 +52,15 @@ python app.py
 ```
 
 Never commit API keys. The default template fallback is the intended no-key demonstration mode.
+
+## Screenshots
+
+Add final screenshots here before submission:
+
+- `[ ] Dashboard with multiple patients and last-check-in indicators`
+- `[ ] Ahmed detail page showing Stable → Concerning → Urgent history`
+- `[ ] Printable patient report`
+- `[ ] About / safety architecture page`
 
 ## How the safety architecture works
 
@@ -73,7 +93,21 @@ python test_scenarios.py
 
 It covers stable data, missing readings, a sudden emergency, a borderline reading, and a patient whose condition improves.
 
-The one-page submission copy is in `PROJECT_DESCRIPTION.md` and can be exported or formatted as a PDF for the hackathon submission.
+The FirstCommit one-page submission copy is in `FIRSTCOMMIT_PROJECT_DESCRIPTION.md` and can be exported or formatted as a PDF for the hackathon submission.
+
+## Challenges overcome
+
+- **API key access:** The project was designed so no secret is required. A local explanation template keeps the app functional when an AI key is unavailable, invalid, rate-limited, or offline.
+- **Safety versus pure AI:** We separated risk calculation from explanation. Deterministic rules decide severity; optional AI only rephrases known reasons.
+- **Framework confusion:** The project briefly contained both Flask and Streamlit versions. Flask was retained because it had the complete multi-page workflow, Chart.js detail view, printable report path, and browser-tested forms. The final repository contains only Flask.
+- **Data edge cases:** Missing values, duplicate check-in dates, malformed numbers, and out-of-range readings now produce understandable feedback rather than server errors.
+
+## What I learned
+
+- A smaller transparent system can be more trustworthy than a larger model-driven feature when the domain is safety-sensitive.
+- Separating data, rules, explanations, and presentation makes it easier to test behavior and change the interface safely.
+- Browser-level testing catches issues that unit-style checks miss, including form redirects, rendered disclaimers, chart payloads, and print views.
+- A polished submission needs both a reliable happy path and explicit handling for the awkward inputs users actually enter.
 
 ## Project structure
 
@@ -85,8 +119,9 @@ CareSignal/
 ├── risk_rules.py
 ├── seed.py
 ├── test_scenarios.py
-├── PROJECT_DESCRIPTION.md
-├── DEMO_VIDEO_SCRIPT.md
+├── FIRSTCOMMIT_PROJECT_DESCRIPTION.md
+├── FIRSTCOMMIT_DEMO_VIDEO_SCRIPT.md
+├── TESTING.md
 ├── requirements.txt
 ├── README.md
 ├── instance/              # created automatically; SQLite database lives here
