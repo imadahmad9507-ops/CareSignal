@@ -14,6 +14,7 @@ Last verified: September 11, 2026
 | Deterministic risk rules | Working | `test_scenarios.py` covers stable, missing, urgent, borderline, improving |
 | Trend arrows | Working | Latest readings compare safely with previous readings |
 | Ahmed seed escalation | Working | Stable -> Concerning -> Urgent |
+| Fatima stable contrast seed | Working | Three stable, low-risk observations are seeded for the dashboard |
 | Chart.js timeline | Working | Canvas renders in browser with oxygen, temperature, and pain |
 | Printable report | Working | `/patients/<id>/report` and browser print action verified |
 | Safety disclaimer | Working | Visible near top of detail/report/about pages |
@@ -27,6 +28,7 @@ Last verified: September 11, 2026
 | Favicon and metadata | Working | SVG favicon and description meta tag render on every page |
 | Vital-sign icons | Working | Lucide icons are added to detail-page trend cards with text labels retained |
 | Safety architecture diagram | Working | About page shows Input -> Validation -> Rules -> Risk -> Explanation |
+| Automated screenshots | Working | `screenshot_capture.py` creates four 1280px-wide PNGs in `screenshots/` |
 | Loading feedback | Working | Check-in submit button changes to `Saving check-in...` and disables itself |
 
 ## Known limitations

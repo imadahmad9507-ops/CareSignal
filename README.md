@@ -36,7 +36,8 @@ The visual layer is presentational only. It does not participate in validation, 
 ## Setup on Windows PowerShell
 
 ```powershell
-cd "C:\Users\Laptop For Sale\Desktop\CareSignal"
+git clone https://github.com/imadahmad9507-ops/CareSignal.git
+cd CareSignal
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
@@ -59,12 +60,30 @@ Never commit API keys. The default template fallback is the intended no-key demo
 
 ## Screenshots
 
-Add final screenshots here before submission:
+The following screenshots were captured automatically with Playwright at 1280x800:
 
-- `[ ] Dashboard with multiple patients and last-check-in indicators`
-- `[ ] Ahmed detail page showing Stable → Concerning → Urgent history`
-- `[ ] Printable patient report`
-- `[ ] About / safety architecture page`
+![CareSignal dashboard](screenshots/dashboard.png)
+
+_Dashboard showing contrasting Ahmed and Fatima patient profiles._
+
+![Ahmed patient detail](screenshots/ahmed-detail.png)
+
+_Ahmed's Stable → Concerning → Urgent history, notes, chart, and explanations._
+
+![Printable patient report](screenshots/patient-report.png)
+
+_Print-friendly patient summary suitable for browser PDF export._
+
+![Safety architecture](screenshots/about-safety.png)
+
+_Visual explanation of Input → Validation → Rules Engine → Risk Level → AI Explanation._
+
+To regenerate them locally:
+
+```powershell
+python -m playwright install chromium
+python screenshot_capture.py
+```
 
 ## How the safety architecture works
 
@@ -79,13 +98,13 @@ AI cannot determine or override risk or emergency status. The interface repeated
 
 ## Demo scenario
 
-`python seed.py` creates Ahmed with exactly three observations:
+`python seed.py` creates two deterministic demo patients. Ahmed has exactly three observations:
 
 - Day 1: oxygen 96, temperature 37.2, no breathing difficulty -> Stable
 - Day 2: oxygen 93, temperature 38.1, mild breathing difficulty -> Concerning
 - Day 3: oxygen 89, temperature 38.8, moderate breathing difficulty -> Urgent
 
-Running `python seed.py` again resets Ahmed's observations without creating duplicates.
+Fatima has three stable, low-risk observations so the dashboard shows a useful contrast. Running `python seed.py` again resets both demo patients' observations without creating duplicates. For a completely clean demo database after manual experimentation, run `python -m flask --app app reset-db` and then `python seed.py`.
 
 ## Edge-case checks
 
@@ -126,6 +145,12 @@ CareSignal/
 ├── FIRSTCOMMIT_PROJECT_DESCRIPTION.md
 ├── FIRSTCOMMIT_DEMO_VIDEO_SCRIPT.md
 ├── TESTING.md
+├── screenshot_capture.py
+├── screenshots/
+│   ├── dashboard.png
+│   ├── ahmed-detail.png
+│   ├── patient-report.png
+│   └── about-safety.png
 ├── requirements.txt
 ├── README.md
 ├── instance/              # created automatically; SQLite database lives here
