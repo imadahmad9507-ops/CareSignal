@@ -18,7 +18,7 @@
     <h3>{{ card.patient.name }}</h3>
     {% if card.latest %}
       <div class="risk-row"><span class="risk-dot {{ card.latest.risk|lower }}"></span><span>{{ card.latest.risk }}</span></div>
-      <p class="muted">Last check-in · {{ card.latest.observation.date }}</p>
+      <p class="muted">Last check-in · {{ card.latest.observation.date }} <span class="relative-date">({{ card.last_checked }})</span></p>
     {% else %}<p class="muted">No check-in recorded yet.</p>{% endif %}
   </a>
 {% endfor %}

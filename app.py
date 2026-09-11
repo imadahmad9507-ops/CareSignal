@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 import sqlite3
 
 from flask import Flask, flash, redirect, render_template, request, url_for
@@ -27,6 +27,40 @@ DISCLAIMER = (
     "emergency, contact a doctor or emergency services immediately."
 )
 
+TREND_FIELDS = {
+    "oxygen": "Oxygen",
+    "temperature": "Temperature",
+    "blood_pressure_sys": "Systolic pressure",
+    "blood_pressure_dia": "Diastolic pressure",
+    "pain_level": "Pain",
+}
+
+
+def trend_direction(current, previous, field):
+    """Return a small direction signal without assigning clinical meaning."""
+    if previous is None or current[field] is None or previous[field] is None:
+        return {"symbol": "→", "label": "No previous reading", "class": "steady"}
+    if float(current[field]) > float(previous[field]):
+        return {"symbol": "↑", "label": "Higher than previous", "class": "up"}
+    if float(current[field]) < float(previous[field]):
+        return {"symbol": "↓", "label": "Lower than previous", "class": "down"}
+    return {"symbol": "→", "label": "Unchanged", "class": "steady"}
+
+
+def relative_date(value):
+    try:
+        checked_date = datetime.strptime(str(value), "%Y-%m-%d").date()
+    except (TypeError, ValueError):
+        return "date unavailable"
+    days = (date.today() - checked_date).days
+    if days < 0:
+        return "future date"
+    if days == 0:
+        return "today"
+    if days == 1:
+        return "1 day ago"
+    return f"{days} days ago"
+
 
 def observation_assessment(observations):
     assessed = []
@@ -34,6 +68,10 @@ def observation_assessment(observations):
         previous = observations[index - 1] if index else None
         risk, reasons = assess_risk(observation, previous)
         explanation, source = generate_explanation(risk, reasons)
+        trends = {
+            field: trend_direction(observation, previous, field)
+            for field in TREND_FIELDS
+        }
         assessed.append(
             {
                 "observation": observation,
@@ -41,6 +79,7 @@ def observation_assessment(observations):
                 "reasons": reasons,
                 "explanation": explanation,
                 "source": source,
+                "trends": trends,
             }
         )
     return assessed
@@ -55,30 +94,44 @@ def parse_observation(form):
     if confusion not in {"yes", "no"} or adherence not in {"yes", "no"}:
         raise ValueError("Choose valid yes/no values.")
 
-    values = {
-        "date": form.get("date", ""),
-        "oxygen": float(form["oxygen"]),
-        "temperature": float(form["temperature"]),
-        "blood_pressure_sys": int(form["blood_pressure_sys"]),
-        "blood_pressure_dia": int(form["blood_pressure_dia"]),
-        "breathing_difficulty": breathing,
-        "pain_level": int(form["pain_level"]),
-        "confusion": confusion,
-        "medication_adherence": adherence,
-        "notes": form.get("notes", "").strip(),
-    }
+    try:
+        values = {
+            "date": form.get("date", ""),
+            "oxygen": float(form["oxygen"]),
+            "temperature": float(form["temperature"]),
+            "blood_pressure_sys": int(form["blood_pressure_sys"]),
+            "blood_pressure_dia": int(form["blood_pressure_dia"]),
+            "breathing_difficulty": breathing,
+            "pain_level": int(form["pain_level"]),
+            "confusion": confusion,
+            "medication_adherence": adherence,
+            "notes": form.get("notes", "").strip(),
+        }
+    except (KeyError, TypeError, ValueError) as error:
+        raise ValueError("Enter a number in every required reading field.") from error
+
     if not values["date"]:
         raise ValueError("Choose an observation date.")
+    try:
+        datetime.strptime(values["date"], "%Y-%m-%d")
+    except ValueError as error:
+        raise ValueError("Use a valid observation date.") from error
+    if not 0 <= values["oxygen"] <= 100:
+        raise ValueError("Oxygen saturation must be between 0 and 100%.")
+    if not 32 <= values["temperature"] <= 43:
+        raise ValueError("Temperature must be between 32°C and 43°C.")
+    if not 40 <= values["blood_pressure_sys"] <= 300:
+        raise ValueError("Systolic blood pressure must be between 40 and 300.")
+    if not 20 <= values["blood_pressure_dia"] <= 200:
+        raise ValueError("Diastolic blood pressure must be between 20 and 200.")
     if not 0 <= values["pain_level"] <= 10:
         raise ValueError("Pain level must be between 0 and 10.")
-    if not 50 <= values["oxygen"] <= 100:
-        raise ValueError("Oxygen saturation must be between 50 and 100.")
     return values
 
 
 @app.template_filter("date_label")
 def date_label(value):
-    return value.strftime("%b %-d, %Y") if hasattr(value, "strftime") else value
+    return value.strftime("%b %d, %Y").replace(" 0", " ") if hasattr(value, "strftime") else value
 
 
 @app.route("/")
@@ -88,7 +141,15 @@ def dashboard():
         observations = get_observations(patient["id"])
         assessed = observation_assessment(observations)
         latest = assessed[-1] if assessed else None
-        patient_cards.append({"patient": patient, "latest": latest})
+        patient_cards.append(
+            {
+                "patient": patient,
+                "latest": latest,
+                "last_checked": relative_date(latest["observation"]["date"])
+                if latest
+                else None,
+            }
+        )
     return render_template("dashboard.html", patient_cards=patient_cards)
 
 
@@ -138,6 +199,37 @@ def patient_detail(patient_id):
         chart_data=chart_data,
         disclaimer=DISCLAIMER,
     )
+
+
+@app.route("/patients/<int:patient_id>/report")
+def patient_report(patient_id):
+    patient = get_patient(patient_id)
+    if patient is None:
+        return "Patient not found", 404
+    assessed = observation_assessment(get_observations(patient_id))
+    return render_template(
+        "report.html",
+        patient=patient,
+        assessed=assessed,
+        latest=assessed[-1] if assessed else None,
+        disclaimer=DISCLAIMER,
+        generated_on=date.today(),
+    )
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template("error.html", code=404, message="That page could not be found."), 404
+
+
+@app.errorhandler(500)
+def server_error(error):
+    return render_template("error.html", code=500, message="Something went wrong. Please try again."), 500
 
 
 @app.cli.command("reset-db")

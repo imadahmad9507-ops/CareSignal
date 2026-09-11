@@ -13,7 +13,7 @@
 <body>
   <nav class="topbar">
     <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark">+</span> CareSignal</a>
-    <a class="nav-action" href="{{ url_for('new_patient') }}">Add patient <span>+</span></a>
+    <div class="nav-actions"><a class="nav-link" href="{{ url_for('about') }}">How it works</a><a class="nav-action" href="{{ url_for('new_patient') }}">Add patient <span>+</span></a></div>
   </nav>
   <main class="shell">
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -24,5 +24,6 @@
     {% block content %}{% endblock %}
   </main>
   <footer>CareSignal is an educational prototype, not a medical device.</footer>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
