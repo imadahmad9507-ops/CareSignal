@@ -3,7 +3,8 @@ import sqlite3
 
 
 BASE_DIR = Path(__file__).resolve().parent
-INSTANCE_DIR = BASE_DIR / "instance"
+# Vercel functions can write only to /tmp; local development keeps instance/.
+INSTANCE_DIR = Path("/tmp/caresignal") if Path("/tmp").exists() and __import__("os").getenv("VERCEL") else BASE_DIR / "instance"
 DATABASE_PATH = INSTANCE_DIR / "caresignal.db"
 
 

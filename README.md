@@ -47,6 +47,12 @@ python app.py
 
 Open <http://127.0.0.1:5000> in a browser.
 
+## Live deployment
+
+CareSignal is deployed on Vercel at [caresignal-firstcommit.vercel.app](https://caresignal-firstcommit.vercel.app).
+
+The Vercel adapter is in `api/index.py` and `vercel.json`. On a fresh deployment, the app seeds Ahmed and Fatima automatically. Because this prototype uses SQLite, Vercel's serverless filesystem is ephemeral; the public deployment is intended for demonstration and resets may occur between cold starts. Local development remains the reliable place for persistent demo edits.
+
 The app works without an AI key. To enable optional explanation wording through an OpenAI-compatible endpoint, set environment variables before starting Flask:
 
 ```powershell

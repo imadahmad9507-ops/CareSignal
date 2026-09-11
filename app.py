@@ -21,6 +21,17 @@ app.config["SECRET_KEY"] = "caresignal-development-key"
 init_db()
 
 
+def ensure_demo_data():
+    """Seed the public demo on a fresh ephemeral deployment only."""
+    if __import__("os").getenv("VERCEL") and not get_patients():
+        from seed import seed
+
+        seed()
+
+
+ensure_demo_data()
+
+
 DISCLAIMER = (
     "This is an educational prototype using synthetic data. It does not diagnose "
     "medical conditions and does not replace professional medical advice. In an "
