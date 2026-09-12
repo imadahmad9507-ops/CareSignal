@@ -7,9 +7,9 @@ if (canvas && observations.length) {
     data: {
       labels: observations.map(item => item.date),
       datasets: [
-        { label: 'Oxygen %', data: observations.map(item => item.oxygen), borderColor: '#2f8f62', backgroundColor: '#2f8f62', tension: 0.3, yAxisID: 'health' },
-        { label: 'Temperature °C', data: observations.map(item => item.temperature), borderColor: '#d8773f', backgroundColor: '#d8773f', tension: 0.3, yAxisID: 'temperature' },
-        { label: 'Pain / 10', data: observations.map(item => item.pain_level), borderColor: '#17221f', backgroundColor: '#17221f', tension: 0.3, yAxisID: 'health' }
+        { label: 'Oxygen %', data: observations.map(item => item.oxygen), borderColor: '#2f8f62', backgroundColor: '#2f8f62', borderWidth: 2, pointRadius: 4, pointHoverRadius: 5, showLine: true, fill: false, tension: 0.3, yAxisID: 'health' },
+        { label: 'Temperature °C', data: observations.map(item => item.temperature), borderColor: '#d8773f', backgroundColor: '#d8773f', borderWidth: 2, pointRadius: 4, pointHoverRadius: 5, showLine: true, fill: false, tension: 0.3, yAxisID: 'temperature' },
+        { label: 'Pain / 10', data: observations.map(item => item.pain_level), borderColor: '#17221f', backgroundColor: '#17221f', borderWidth: 2, pointRadius: 4, pointHoverRadius: 5, showLine: true, fill: false, tension: 0.3, yAxisID: 'health' }
       ]
     },
     options: {
