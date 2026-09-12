@@ -22,10 +22,23 @@ init_db()
 
 
 def ensure_demo_data():
-    """Seed the public demo on a fresh ephemeral deployment only."""
-    if __import__("os").getenv("VERCEL") and not get_patients():
-        from seed import seed
+    """Repair incomplete public demo data on an ephemeral deployment."""
+    if not __import__("os").getenv("VERCEL"):
+        return
 
+    from seed import DEMO_OBSERVATIONS, FATIMA_OBSERVATIONS, seed
+
+    patients = get_patients()
+    expected = {"Ahmed": len(DEMO_OBSERVATIONS), "Fatima": len(FATIMA_OBSERVATIONS)}
+    complete = all(
+        any(
+            patient["name"] == name
+            and len(get_observations(patient["id"])) == observation_count
+            for patient in patients
+        )
+        for name, observation_count in expected.items()
+    )
+    if not complete:
         seed()
 
 
