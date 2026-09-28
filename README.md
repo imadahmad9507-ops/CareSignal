@@ -2,6 +2,10 @@
 
 CareSignal is a Flask-based, explainable, rules-based health trend monitoring prototype for family caregivers. This release is prepared for the FirstCommit general web app category using synthetic data, not a medical device or diagnostic system.
 
+## QA and project delivery
+
+CareSignal was manually tested and tested with Playwright. Test cases and final reports were prepared, screenshots and screen recordings were captured as submission evidence, and the project work was coordinated through completion. See [QA & Testing Status](TESTING.md) for documented workflow results and existing screenshot evidence. Submission-only materials are not stored in this repository.
+
 ## What it does
 
 - Stores patients and daily observations in SQLite.
@@ -184,4 +188,3 @@ CareSignal/
 In accordance with FirstCommit rules, AI tools (large language models) were used during development as learning and brainstorm aids to explore edge-case scenarios, generate code drafts, debug syntax, and refine documentation. 
 
 All clinical risk logic in CareSignal is completely deterministic, inspectable, and human-written in Python rules (`risk_rules.py`). The optional runtime AI integration (`explanations.py`) is strictly constrained to phrasing explanations in plain English and has zero authority to determine or alter clinical risk levels.
-
