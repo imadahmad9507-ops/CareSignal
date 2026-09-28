@@ -1,4 +1,6 @@
-# CareSignal Testing Status
+# CareSignal QA & Testing Status
+
+CareSignal was manually tested and tested with Playwright. Test cases and final reports were prepared, and screenshots and screen recordings were captured as project-submission evidence. QA and project work were coordinated through completion. This summary describes the project work; submission packages are not stored in this repository.
 
 Last verified: September 11, 2026
 
